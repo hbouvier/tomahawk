@@ -1,6 +1,6 @@
 {
     "author"      : "Henri Bouvier",
-    "name"        : "Tomahawk",
+    "name"        : "tomahawk",
     "description" : "Minimal HTTP Server",
     "version"     : "0.0.1",
     "repository"  : {
