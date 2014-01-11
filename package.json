@@ -1,0 +1,35 @@
+{
+    "author"      : "Henri Bouvier",
+    "name"        : "Tomahawk",
+    "description" : "Minimal HTTP Server",
+    "version"     : "0.0.1",
+    "repository"  : {
+        "type" : "git",
+        "url"  : "https://github.com/hbouvier/tomahawk.git"
+    },
+    "dependencies"         : {
+        "express"      : "latest",
+        "connect"      : "latest",
+        "socket.io"    : "latest",
+        "winston"      : "latest",
+        "node-options" : "latest"
+    },
+    "engines"              : {
+        "node" : ">= 0.8.0 < 0.11.0"
+    },
+    "main" : "./lib/tomahawk.js",
+    "bin"  : {
+        "nosqlited" : "./bin/tomahawk"
+    },
+    "scripts": {
+        "start": "bin/tomahawk"
+    },
+    "configuration"        : {
+        "name"       : "Tomahawk",
+        "level"      : "verbose",
+        "www"        : ".",
+        "config"     : "config.json",
+        "context"    : "/",
+        "port"       : 8080
+    }
+}
