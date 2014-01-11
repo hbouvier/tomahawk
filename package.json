@@ -2,7 +2,7 @@
     "author"      : "Henri Bouvier",
     "name"        : "tomahawk",
     "description" : "Minimal HTTP Server",
-    "version"     : "0.0.1",
+    "version"     : "0.0.2",
     "repository"  : {
         "type" : "git",
         "url"  : "https://github.com/hbouvier/tomahawk.git"
@@ -30,6 +30,10 @@
         "www"        : ".",
         "config"     : "config.json",
         "context"    : "/",
-        "port"       : 8080
+        "port"       : 8080,
+        "headers"    : [
+            "Access-Control-Allow-Origin : *",
+            "X-Frame-Options             : ALLOWALL"
+        ]
     }
 }
