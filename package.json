@@ -31,6 +31,7 @@
         "config"     : "config.json",
         "context"    : "/",
         "port"       : 8080,
+        "ip"         : "0.0.0.0",
         "headers"    : [
             "Access-Control-Allow-Origin : *",
             "X-Frame-Options             : ALLOWALL"

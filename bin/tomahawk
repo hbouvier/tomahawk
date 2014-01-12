@@ -18,6 +18,7 @@
     pkgConfig.level    = process.env.LEVEL   || pkgConfig.level;
     pkgConfig.www      = process.env.WWW     || pkgConfig.www;
     pkgConfig.port     = process.env.PORT    || pkgConfig.port;
+    pkgConfig.ip       = process.env.IP      || pkgConfig.ip;
     pkgConfig.context  = process.env.CONTEXT || pkgConfig.context;
 
     ///////////////////////////////////////////////////////////////////////////
