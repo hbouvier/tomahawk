@@ -69,7 +69,7 @@
 	logger.log('debug', 'options=%j', pkgConfig, meta);
     pkgConfig.meta     = meta;
     pkgConfig.logger   = logger;
-    tomahawk.start(pkgConfig);
+    tomahawk.create(pkgConfig).start();
 
     ///////////////////////////////////////////////////////////////////////////
     //
