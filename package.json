@@ -2,17 +2,17 @@
     "author"      : "Henri Bouvier",
     "name"        : "tomahawk",
     "description" : "Minimal HTTP Server",
-    "version"     : "0.0.4",
+    "version"     : "0.0.5",
     "repository"  : {
         "type" : "git",
         "url"  : "https://github.com/hbouvier/tomahawk.git"
     },
     "dependencies"         : {
-        "express"      : "latest",
-        "connect"      : "latest",
-        "socket.io"    : "latest",
-        "winston"      : "latest",
-        "node-options" : "latest"
+        "express"      : "3.4.8",
+        "connect"      : "2.12.0",
+        "socket.io"    : "0.9.16",
+        "winston"      : "0.7.2",
+        "node-options" : "0.0.2"
     },
     "engines"              : {
         "node" : ">= 0.8.0 < 0.11.0"
@@ -33,8 +33,10 @@
         "port"       : 8080,
         "ip"         : "0.0.0.0",
         "headers"    : [
-            "Access-Control-Allow-Origin : *",
-            "X-Frame-Options             : ALLOWALL"
+            "Access-Control-Allow-Origin  : *",
+            "Access-Control-Allow-Methods : GET,PUT,POST,DELETE",
+            "Access-Control-Allow-Headers : Content-Type",
+            "X-Frame-Options              : ALLOWALL"
         ]
     }
 }
