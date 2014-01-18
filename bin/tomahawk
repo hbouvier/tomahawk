@@ -1,25 +1,14 @@
 #!/usr/bin/env node
 (function () {
-	var path      = require('path'),
-    	fs        = require('fs'),
+	var fs        = require('fs'),
+        path      = require('path'),
         opts      = require('node-options'),
-        rootPath  = path.join(path.dirname(fs.realpathSync(__filename)), '..'),
-    	tomahawk  = require(path.join(rootPath, "lib", "tomahawk.js")),
-        pkgConfig = JSON.parse(fs.readFileSync(path.join(rootPath, 'package.json'))).configuration;
+        pkgConfig = opts.readPackageConfig(path.join(__dirname, '..', 'package.json')),
+        tomahawk  = require(path.join(pkgConfig.rootPath, "lib", "tomahawk.js"));
 
     ///////////////////////////////////////////////////////////////////////////
     //
-    pkgConfig = pkgConfig || {};
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    pkgConfig.name     = process.env.NAME    || pkgConfig.name;
-    pkgConfig.config   = process.env.CONFIG  || pkgConfig.config;
-    pkgConfig.level    = process.env.LEVEL   || pkgConfig.level;
-    pkgConfig.www      = process.env.WWW     || pkgConfig.www;
-    pkgConfig.port     = process.env.PORT    || pkgConfig.port;
-    pkgConfig.ip       = process.env.IP      || pkgConfig.ip;
-    pkgConfig.context  = process.env.CONTEXT || pkgConfig.context;
+    pkgConfig = opts.mergeEnvironment(pkgConfig);
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -53,10 +42,12 @@
     // If an argument was passed on the command line, but was not defined in
     // the "configuration" property of the package.json, lets print the USAGE.
     if (result.errors) {
-        usage(result.errors);
+        logger.log('error', opts.usage(pkgConfig), meta);
+        logger.log('error', opts.error(result.errors), meta);
         process.exit(-1);
     } else if (result.args.length > 0) {
-        usage(result.args);
+        logger.log('error', opts.usage(pkgConfig), meta);
+        logger.log('error', opts.error(result.args), meta);
         process.exit(-1);
     }
 
@@ -64,8 +55,7 @@
     //
     // If not, start as a Web Server. The server will provide both an HTML
     // frontend and a JSON Web Service.
-    var tomahawk = require(path.join(rootPath, "lib", "tomahawk"));
-    pkgConfig.rootPath = rootPath;
+    var tomahawk = require(path.join(pkgConfig.rootPath, "lib", "tomahawk"));
     pkgConfig.www      = getAbsFilename(pkgConfig.www);
 	logger.log('debug', 'options=%j', pkgConfig, meta);
     pkgConfig.meta     = meta;
@@ -75,25 +65,23 @@
     ///////////////////////////////////////////////////////////////////////////
     //
     function overlayConfig(fileName) {
-    	fileName = getAbsFilename(fileName);
-	    if (fileName && fs.existsSync(fileName)) {
-	    	var config = JSON.parse(fs.readFileSync(fileName));
-		    for (var opt in config) {
-		        pkgConfig[opt] = config[opt];
-		    }
-	    }
+    	var absFileName = getAbsFilename(fileName);
+        // Try first the the CWD
+	    if (absFileName && fs.existsSync(absFileName)) {
+	    	var config = JSON.parse(fs.readFileSync(absFileName));
+            pkgConfig = opts.merge(config, pkgConfig);
+	    } else {
+            // No, try the Tomahawk package
+            fileName = pkgConfig.rootPath + "/" + fileName;
+            if (fileName && fs.existsSync(fileName)) {
+                var config = JSON.parse(fs.readFileSync(fileName));
+                pkgConfig = opts.merge(config, pkgConfig);
+            }
+        }
 	}
 	function getAbsFilename(filename) {
 		if (!filename || filename.charAt(0) === '/') return filename;
 		return path.join(process.cwd(), filename);
 	}
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    function usage(errors) {
-        logger.log('error', 'USAGE: %s --name=Tomahawk --level=silly|debug|verbose|info|warn|error --port=8080 --context=/ --www=. --config=config.json', meta.module, meta);
-        if (errors) {
-            logger.log('error', '       UNKNOWN ARGUMENTS: "%s"', errors.join('", "'), meta);
-        }
-    }
 }).call();
