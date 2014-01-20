@@ -12,7 +12,7 @@ npm install -g tomahawk
 
 - To serve the current directory using the default port 8080
 
-	tomahawk
+    tomahawk
 
 - To serve "web/public" from the current directory using the default port 8080
 
@@ -30,28 +30,40 @@ npm install -g tomahawk
 
 	tomahawk --level=error
 
-## How can I remove those unsafe headers inserted by tomahawk that are only usefull for development?
+## How can I add CORS http headers
 
-	tomahawk --headers=
+	tomahawk --config=config.development.json
+or
+
+    tomahawk --headers='["Access-Control-Allow-Origin:*","Access-Control-Allow-Methods:GET,PUT,POST,DELETE","Access-Control-Allow-Headers:Content-Type","X-Frame-Options:ALLOWALL"]'
+    
 
 - Can I save the configration, to avoid typing it every time?
 
 	1) Either create a config.json and save it in the current working directory
 	2) Create your configuration file (e.g. tommy.cfg) and :
 		tomahawk --config=tommy.cfg
-		or
+	or
 		export CONFIG=tommy.cfg
 		tomahawk
 
 	Your configuration file should look like:
 
-	> {
-    >    "level"      : "error",
-    >    "www"        : ".",
-    >    "context"    : "/MyApp",
-    >    "port"       : 9000,
-    >    "headers"    : [
-    >    ]
-    > }
-
-
+	    {
+            "level"      : "error",
+            "www"        : ".",
+            "context"    : "/MyApp",
+            "port"       : 9000,
+            "headers"    : [
+                "Access-Control-Allow-Origin:*",
+                "X-Frame-Options:ALLOWALL"
+            ],
+            "cgi" : [
+                {
+                    "route"   : "/version",
+                	"method"  : "GET",
+                	"command" : "/bin/sh",
+                	"args"    : ["-c",  "echo '{\"version\":\"1.0.0\"}'"]
+                }
+            ]
+         }
