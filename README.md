@@ -37,6 +37,10 @@ or
 
     tomahawk --headers='["Access-Control-Allow-Origin:*","Access-Control-Allow-Methods:GET,PUT,POST,DELETE","Access-Control-Allow-Headers:Content-Type","X-Frame-Options:ALLOWALL"]'
     
+## start a CGI
+    tomahawk --cgi='[{"route":"/echo","method":"POST","command":"/bin/sh", "args":["-c", "read line ; echo $line"], "encoding":"utf8"}]'
+    echo allo | curl -X POST -d @- http://localhost:8080/echo
+
 
 - Can I save the configration, to avoid typing it every time?
 
