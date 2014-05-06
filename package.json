@@ -36,8 +36,14 @@
         "cgi"        : [],
         "headers"    : [],
 	"socket"     : {
-            "level"           : 1,
-            "transports"      : ["jsonp-polling"],
+            "level"           : "error",
+            "transports"      : [
+                "websocket",
+                "flashsocket",
+                "htmlfile",
+                "xhr-polling",
+                "jsonp-polling"
+            ],
             "pollingduration" : 10
         }
     }
