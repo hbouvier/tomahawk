@@ -2,7 +2,7 @@
     "author"      : "Henri Bouvier",
     "name"        : "tomahawk",
     "description" : "Minimal HTTP Server",
-    "version"     : "0.0.13",
+    "version"     : "0.0.14",
     "repository"  : {
         "type" : "git",
         "url"  : "https://github.com/hbouvier/tomahawk.git"
@@ -35,7 +35,7 @@
         "routes"     : [],
         "cgi"        : [],
         "headers"    : [],
-	"socket"     : {
+	    "socket"     : {
             "level"           : "error",
             "transports"      : [
                 "websocket",

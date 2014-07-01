@@ -79,55 +79,61 @@ or
 
 ## How can I include tomahawk into my project as a module to server REST routes?
 
-In your server.js add:
+You can look at the sample code under the sample directory:
 
-    var app = require('tomahawk').create({port:8080,routes:['./lib/routes']}).start();
+samples/sample_server.js:
 
-Then create a file in './lib/routes.js' with:
+    var app = require('tomahawk').create({port:8080,routes:[__dirname + '/lib/routes']}).start();
+
+samples/lib/routes.js':
 
     module.exports = function () {
     
         function routes(app, config, io) {
-            var captains = {
-                "jim"    : "James Tiberius "Jim" Kirk",
-                "picard" : "Jean-Luc Picard"
+            var database = {
+                captains : {
+                    "jim"    : "James Tiberius Kirk",
+                    "picard" : "Jean-Luc Picard"
+                },
+                starShips : {
+                    "jim": "NCC1701-A",
+                    "picard": "NCC1701-D"
+                }
             };
-            
-            var starShips : {
-                "jim"    : "NCC1701-A",
-                "picard" : "NCC1701-D"
-                
-            };
-                            
+    
             // GET
-            app.get('/api/v1/capitain/:id?', function (req, res) {
+            app.get('/api/v1/captain/:id?', function (req, res) {
                 var withStarship = req.query.starship === 'true';
-                
                 if (req.params.id) {
-                    res.json(withStarship ? 
-                        {id:req.params.id,name:capitains[req.params.id], starship:starShips[req.params.id]} : 
-                        {id:req.params.id,name:capitains[req.params.id]});
+                    res.json(withStarship ?
+                    {id:req.params.id,name:database.captains[req.params.id], starship:database.starShips[req.params.id]} :
+                    {id:req.params.id,name:database.captains[req.params.id]});
                 } else {
-                    res.json(captains); 
+                    res.json(database.captains);
                 }
                 res.end();
             });
     
-            // PUT 
-            app.put('/api/v1/capitain/:id', function (req, res) {
-                captains.push({req.params.id, req.body});
+            // PUT
+            app.put('/api/v1/captain/:id', function (req, res) {
+                database.captains[req.params.id] = req.body;
                 io.sockets.emit('new:captain', {id:req.params.id, name:req.body});  // Optional, if you want to use websocket
+                res.json({id:req.params.id,operation:"put",status:"OK"});
+                res.end();
             });
     
             // DELETE
-            app.delete('/dns/api/v1/name/:id', function (req, res) {
-                delete captains[req.params.id];
+            app.delete('/api/v1/captain/:id', function (req, res) {
+                delete database.captains[req.params.id];
                 io.sockets.emit('del:captain', {id:req.params.id}); // Optional, if you want to use websocket
-                res.json({id:req.params.id,status:"OK"});
+                res.json({id:req.params.id,operation:"delete", status:"OK"});
                 res.end();
             });
         }
     
         return routes;
-    }();
-    
+    }();    
+
+Run:
+
+    node sample_server.js
