@@ -6,3 +6,5 @@ package.json.latest
 tomahawk.iml
 txt
 version-cgi
+store.json
+.c9/

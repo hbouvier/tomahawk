@@ -3,8 +3,7 @@
 	var fs        = require('fs'),
         path      = require('path'),
         opts      = require('node-options'),
-        pkgConfig = opts.readPackageConfig(path.join(__dirname, '..', 'package.json')),
-        tomahawk  = require(path.join(pkgConfig.rootPath, "lib", "tomahawk.js"));
+        pkgConfig = opts.readPackageConfig(path.join(__dirname, '..', 'package.json'));
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -65,16 +64,18 @@
     ///////////////////////////////////////////////////////////////////////////
     //
     function overlayConfig(fileName) {
-    	var absFileName = getAbsFilename(fileName);
+    	var config,
+    	    absFileName = getAbsFilename(fileName);
+    	    
         // Try first the the CWD
 	    if (absFileName && fs.existsSync(absFileName)) {
-	    	var config = JSON.parse(fs.readFileSync(absFileName));
+	    	config = JSON.parse(fs.readFileSync(absFileName));
             pkgConfig = opts.merge(config, pkgConfig);
 	    } else {
             // No, try the Tomahawk package
             fileName = pkgConfig.rootPath + "/" + fileName;
             if (fileName && fs.existsSync(fileName)) {
-                var config = JSON.parse(fs.readFileSync(fileName));
+                config = JSON.parse(fs.readFileSync(fileName));
                 pkgConfig = opts.merge(config, pkgConfig);
             }
         }
