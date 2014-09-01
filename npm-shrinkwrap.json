@@ -1,6 +1,6 @@
 {
   "name": "tomahawk",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "dependencies": {
     "body-parser": {
       "version": "1.5.0",
@@ -340,9 +340,9 @@
       }
     },
     "node-options": {
-      "version": "0.0.3",
-      "from": "node-options@latest",
-      "resolved": "https://registry.npmjs.org/node-options/-/node-options-0.0.3.tgz"
+      "version": "0.0.6",
+      "from": "node-options@0.0.6",
+      "resolved": "https://registry.npmjs.org/node-options/-/node-options-0.0.6.tgz"
     },
     "socket.io": {
       "version": "1.0.6",
